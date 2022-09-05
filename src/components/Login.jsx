@@ -1,36 +1,32 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
 import { GoogleLogin } from "@react-oauth/google";
-import { client } from "../client";
+import { doc, setDoc } from "firebase/firestore";
+import { toast } from "react-toastify";
 
 import shareVideo from "../assets/share.mp4";
 import logo from "../assets/logowhite.png";
 import { useNavigate } from "react-router-dom";
+import { db } from "../firebase/firebase-config";
 
 const Login = () => {
     const navigate = useNavigate();
-    const responseGoogle = (response) => {
+    const responseGoogle = async (response) => {
         const decoded = jwt_decode(response.credential);
 
         const { name, sub, picture } = decoded;
 
         const saveUser = {
-            sub,
-            name,
-            picture,
+            googleId: sub,
+            username: name,
+            avatar: picture,
         };
         localStorage.setItem("user", JSON.stringify(saveUser));
 
-        const doc = {
-            _id: sub,
-            _type: "user",
-            userName: name,
-            image: picture,
-        };
+        await setDoc(doc(db, "users", sub), saveUser);
 
-        client.createIfNotExists(doc).then(() => {
-            navigate("/", { replace: true });
-        });
+        toast.success("Success!!!", { pauseOnHover: false });
+        navigate("/");
     };
 
     return (

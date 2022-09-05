@@ -1,8 +1,8 @@
+import { collection, getDocs, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { db } from "../firebase/firebase-config";
 
-import { client } from "../client";
-import { feedQuery, searchQuery } from "../utils/data";
 import MasonryLayout from "./MasonryLayout";
 import Spinner from "./Spinner";
 
@@ -12,23 +12,28 @@ const Feed = () => {
     const { categoryId } = useParams();
 
     useEffect(() => {
-        setLoading(true);
-        if (categoryId) {
-            const query = searchQuery(categoryId);
+        async function fetchData() {
+            setLoading(true);
+            if (categoryId) {
+                // get data
+            } else {
+                const q = query(collection(db, "posts"));
 
-            client.fetch(query).then((data) => {
-                setPins(data);
-                setLoading(false);
-            });
-        } else {
-            client.fetch(feedQuery).then((data) => {
-                setPins(data);
-                setLoading(false);
-            });
+                const querySnapshot = await getDocs(q);
+                const results = [];
+                querySnapshot.forEach((doc) => {
+                    results.push({
+                        id: doc.id,
+                        ...doc.data(),
+                    });
+                });
+                setPins(results);
+            }
+            setLoading(false);
         }
-    }, [categoryId]);
 
-    console.log("Pins", pins);
+        fetchData();
+    }, [categoryId]);
 
     if (loading)
         return <Spinner message="We are adding new ideas to your feed!" />;

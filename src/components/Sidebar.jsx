@@ -62,16 +62,16 @@ const Sidebar = ({ user, closeToggle }) => {
             </div>
             {user && (
                 <Link
-                    to={`user-profile/${user._id}`}
+                    to={`user-profile/${user.googleId}`}
                     className="flex my-5 mt-0 mb-3 gap-2 p-2 items-center bg-white rounded-lg shadow-lg mx-3"
                     onClick={handleCloseSidebar}
                 >
                     <img
-                        src={user?.image}
-                        alt={user?.userName}
+                        src={user?.avatar}
+                        alt={user?.username}
                         className="w-10 h-10 rounded-full"
                     />
-                    <p>{user?.userName}</p>
+                    <p>{user?.username}</p>
                 </Link>
             )}
         </div>

@@ -23,11 +23,11 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
             </div>
             <div className="flex gap-3">
                 <Link
-                    to={`user-profile/${user?._id}`}
+                    to={`user-profile/${user?.googleId}`}
                     className="hidden md:block"
                 >
                     <img
-                        src={user?.image}
+                        src={user?.avatar}
                         alt="user"
                         className="w-14 h-12 rounded-lg"
                     />

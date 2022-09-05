@@ -7,23 +7,12 @@ import logo from "../assets/logo.png";
 import Sidebar from "../components/Sidebar";
 import UserProfile from "../components/UserProfile";
 import Pin from "./Pin";
-import { client } from "../client";
-import { userQuery } from "../utils/data";
-import { fetchUser } from "../utils/fetchUser";
+import { getUserInfo } from "../utils/fetchUser";
 
 const Home = () => {
     const [toggleSidebar, setToggleSidebar] = useState(false);
-    const [user, setUser] = useState(null);
     const scrollRef = useRef(null);
-
-    const userInfo = fetchUser();
-
-    useEffect(() => {
-        const query = userQuery(userInfo?.sub);
-        client.fetch(query).then((data) => {
-            setUser(data[0]);
-        });
-    }, [userInfo?.sub]);
+    const userInfo = getUserInfo();
 
     useEffect(() => {
         scrollRef.current.scrollTo(0, 0);
@@ -32,7 +21,7 @@ const Home = () => {
     return (
         <div className="flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out">
             <div className="hidden md:flex h-screen flex-initial">
-                <Sidebar user={user && user} />
+                <Sidebar user={userInfo && userInfo} />
             </div>
 
             <div className="flex md:hidden flex-row">
@@ -45,9 +34,9 @@ const Home = () => {
                     <Link to="/">
                         <img src={logo} alt="logo" className="w-28" />
                     </Link>
-                    <Link to={`user-profile/${user?._id}`}>
+                    <Link to={`user-profile/${userInfo?.googleId}`}>
                         <img
-                            src={user?.image}
+                            src={userInfo?.avatar}
                             alt="logo"
                             className="w-28 rounded-full"
                         />
@@ -65,7 +54,7 @@ const Home = () => {
                         />
                     </div>
                     <Sidebar
-                        user={user && user}
+                        user={userInfo && userInfo}
                         closeToggle={setToggleSidebar}
                     />
                 </div>
@@ -79,7 +68,10 @@ const Home = () => {
                         path="/user-profile/:userId"
                         element={<UserProfile />}
                     />
-                    <Route path="/*" element={<Pin user={user && user} />} />
+                    <Route
+                        path="/*"
+                        element={<Pin user={userInfo && userInfo} />}
+                    />
                 </Routes>
             </div>
         </div>

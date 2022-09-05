@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
-import { client, urlFor } from "../client";
 import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
 import Spinner from "./Spinner";
 
@@ -13,21 +11,7 @@ const PinDetail = ({ user }) => {
     const [addingComment, setAddingComment] = useState(false);
     const { pinId } = useParams();
 
-    const fetchPinDetails = () => {
-        let query = pinDetailQuery(pinId);
-
-        if (query) {
-            client.fetch(query).then((data) => {
-                setPinDetail(data[0]);
-
-                if (data[0]) {
-                    query = pinDetailMorePinQuery(data[0]);
-
-                    client.fetch(query).then((res) => setPins(res));
-                }
-            });
-        }
-    };
+    const fetchPinDetails = () => {};
 
     useEffect(() => {
         fetchPinDetails();
@@ -39,7 +23,7 @@ const PinDetail = ({ user }) => {
         <div className="flex xl:flex-row flex-col m-auto bg-white max-w-[1500px] rounded-[32px]">
             <div className="flex justify-center items-center md:items-start flex-initial">
                 <img
-                    src={pinDetail?.image && urlFor(pinDetail.image).url()}
+                    src=""
                     alt="details img"
                     className="rounded-t-3xl rounded-b-lg"
                 />
@@ -49,7 +33,7 @@ const PinDetail = ({ user }) => {
                 <div className="flex items-center justify-between">
                     <div className="flex gap-2 items-center">
                         <a
-                            href={`${pinDetail.image?.asset?.url}?dl=`}
+                            href="/"
                             download
                             onClick={(e) => e.stopPropagation()}
                             className="bg-white w-9 h-9 rounded-full flex items-center justify-center text-dark text-xl opacity-75 hover:opacity-100 hover:shadow-md outline-none"
