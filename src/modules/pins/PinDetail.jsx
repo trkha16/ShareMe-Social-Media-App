@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
 import { useParams } from "react-router-dom";
-import { pinDetailMorePinQuery, pinDetailQuery } from "../utils/data";
-import Spinner from "./Spinner";
+import Spinner from "../../components/spinner/Spinner";
 
 const PinDetail = ({ user }) => {
     const [pins, setPins] = useState(null);

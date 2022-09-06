@@ -1,10 +1,9 @@
 import { collection, getDocs, query } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { db } from "../firebase/firebase-config";
-
-import MasonryLayout from "./MasonryLayout";
-import Spinner from "./Spinner";
+import MasonryLayout from "../../components/layout/MasonryLayout";
+import Spinner from "../../components/spinner/Spinner";
+import { db } from "../../firebase/firebase-config";
 
 const Feed = () => {
     const [loading, setLoading] = useState(false);

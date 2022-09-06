@@ -4,9 +4,9 @@ import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 
-import { categories } from "../utils/data";
-import Spinner from "./Spinner";
-import { db } from "../firebase/firebase-config";
+import { categories } from "../../utils/data";
+import { db } from "../../firebase/firebase-config";
+import Spinner from "../../components/spinner/Spinner";
 
 const CreatePin = ({ user }) => {
     const [title, setTitle] = useState("");
@@ -120,7 +120,7 @@ const CreatePin = ({ user }) => {
                         type="text"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
-                        placeholder="Add your title here"
+                        placeholder="Enter title here"
                         className="outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2"
                     />
 
@@ -139,7 +139,7 @@ const CreatePin = ({ user }) => {
                         type="text"
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
-                        placeholder="What is your pin about"
+                        placeholder="Enter your description"
                         className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
                     />
 

@@ -4,10 +4,10 @@ import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import logo from "../assets/logo.png";
 
-import Sidebar from "../components/Sidebar";
-import UserProfile from "../components/UserProfile";
-import Pin from "./Pin";
 import { getUserInfo } from "../utils/fetchUser";
+import Sidebar from "../modules/home/Sidebar";
+import UserProfile from "../modules/users/UserProfile";
+import Pin from "../modules/pins/Pin";
 
 const Home = () => {
     const [toggleSidebar, setToggleSidebar] = useState(false);

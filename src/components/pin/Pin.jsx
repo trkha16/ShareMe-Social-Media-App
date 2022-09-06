@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MdDownloadForOffline } from "react-icons/md";
 import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
-import { db } from "../firebase/firebase-config";
+import { db } from "../../firebase/firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
 const Pin = ({ pin }) => {
