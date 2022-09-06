@@ -26,16 +26,18 @@ const Pin = ({ pin }) => {
                 onMouseEnter={() => setPostHovered(true)}
                 onMouseLeave={() => setPostHovered(false)}
                 onClick={() => navigate(`/pin-detail/${pin?.id}`)}
-                className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
+                className="relative cursor-zoom-in w-auto hover:shadow-lg shadow-sm rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
             >
                 <img
                     src={pin?.imageUrl}
                     alt="post"
                     className="rounded-lg w-full"
                 />
-                {/* {postHovered && (
+                {postHovered && (
                     <div className="absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-2 z-50">
-                        <div className="flex items-center justify-between">
+                        <div className="absolute top-0 bottom-0 right-0 left-0 bg-blackImageOverlay"></div>
+
+                        {/* <div className="flex items-center justify-between">
                             <div className="flex gap-2">
                                 <a
                                     href="/"
@@ -80,9 +82,9 @@ const Pin = ({ pin }) => {
                                     <BsFillArrowUpRightCircleFill />
                                 </a>
                             )}
-                        </div>
+                        </div> */}
                     </div>
-                )} */}
+                )}
             </div>
 
             <Link
