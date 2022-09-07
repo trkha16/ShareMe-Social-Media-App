@@ -2,9 +2,21 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { IoMdAdd, IoMdSearch } from "react-icons/io";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
+import { useDispatch } from "react-redux";
+import { toggleDarkMode } from "../../redux/globalSlice";
+import useDarkMode from "../../hooks/useDarkMode";
 
 const Navbar = ({ searchTerm, setSearchTerm, user }) => {
     const navigate = useNavigate();
+
+    const [darkMode, setDarkMode] = useDarkMode();
+    const dispatch = useDispatch();
+
+    const handleToggleDarkMode = () => {
+        dispatch(toggleDarkMode(darkMode));
+        setDarkMode(!darkMode);
+    };
 
     if (!user) return null;
 
@@ -38,6 +50,12 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
                 >
                     <IoMdAdd />
                 </Link>
+                <div
+                    onClick={handleToggleDarkMode}
+                    className="flex justify-center items-center border w-12 h-12 md:w-14 md:h-12 cursor-pointer hover:shadow-md rounded-lg"
+                >
+                    {darkMode ? <MdDarkMode /> : <MdLightMode />}
+                </div>
             </div>
         </div>
     );

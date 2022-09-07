@@ -1,6 +1,6 @@
 module.exports = {
     purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-    darkMode: false, // or 'media' or 'class'
+    darkMode: "class",
     theme: {
         extend: {
             margin: {
@@ -49,6 +49,7 @@ module.exports = {
                 secondaryColor: "#F0F0F0",
                 blackOverlay: "rgba(0, 0 ,0 ,0.7)",
                 blackImageOverlay: "rgba(0, 0 ,0 ,0.3)",
+                darkMode: "#1C1C24",
             },
             keyframes: {
                 "slide-in": {
