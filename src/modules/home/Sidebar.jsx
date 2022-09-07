@@ -1,12 +1,9 @@
 import React from "react";
 import { NavLink, Link } from "react-router-dom";
-
 import { RiHomeFill } from "react-icons/ri";
-
 import logo from "../../assets/logo.png";
 import logoWhite from "../../assets/logowhite.png";
 import { categories } from "../../utils/data";
-
 import { useSelector } from "react-redux";
 
 const isNotActiveStyle =

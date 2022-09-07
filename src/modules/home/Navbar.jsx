@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { IoMdAdd, IoMdSearch } from "react-icons/io";
@@ -13,6 +13,11 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
     const [darkMode, setDarkMode] = useDarkMode();
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        dispatch(toggleDarkMode(!darkMode));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleToggleDarkMode = () => {
         dispatch(toggleDarkMode(darkMode));
         setDarkMode(!darkMode);
@@ -21,7 +26,7 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
     if (!user) return null;
 
     return (
-        <div className="flex gap-2 md:gap-5 w-full mt-5 pb-7">
+        <div className="flex gap-2 md:gap-5 w-full mt-5 mb-7">
             <div className="flex justify-start items-center w-full px-2 rounded-md bg-white border-none outline-none focus-within:shadow-sm">
                 <IoMdSearch fontSize={21} className="ml-1" />
                 <input
@@ -46,13 +51,13 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
                 </Link>
                 <Link
                     to="create-pin"
-                    className="bg-black text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center"
+                    className="bg-black text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center dark:bg-red-500"
                 >
                     <IoMdAdd />
                 </Link>
                 <div
                     onClick={handleToggleDarkMode}
-                    className="flex justify-center items-center border w-12 h-12 md:w-14 md:h-12 cursor-pointer hover:shadow-md rounded-lg"
+                    className="flex justify-center items-center border w-12 h-12 md:w-14 md:h-12 cursor-pointer hover:shadow-md rounded-lg dark:bg-red-500 dark:border-0 dark:text-white"
                 >
                     {darkMode ? <MdDarkMode /> : <MdLightMode />}
                 </div>

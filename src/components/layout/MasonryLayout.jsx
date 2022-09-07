@@ -14,8 +14,8 @@ const breakpointObj = {
 const MasonryLayout = ({ pins }) => {
     if (pins.length === 0)
         return (
-            <div className="flex justify-center items-center">
-                <h1>Nothing here</h1>
+            <div className="flex justify-center items-center mt-10">
+                <h1 className="dark:text-white">Nothing here</h1>
             </div>
         );
 

@@ -18,6 +18,13 @@ const UserProfile = () => {
         fetchAuthor();
     }, [userId]);
 
+    useEffect(() => {
+        document.title = userInfo?.username || "ShareMe";
+        return () => {
+            document.title = "ShareMe";
+        };
+    }, [userInfo?.username]);
+
     return (
         <div>
             <div className="flex flex-col justify-center items-center">
@@ -26,12 +33,12 @@ const UserProfile = () => {
                     alt="avatar"
                     className="rounded-full object-cover cursor-pointer"
                 />
-                <h1 className="text-3xl font-semibold mt-5">
+                <h1 className="text-3xl font-semibold mt-5 dark:text-white">
                     {userInfo?.username}
                 </h1>
             </div>
 
-            <div>
+            <div className="mt-10">
                 <Feed userId={userInfo?.googleId} />
             </div>
         </div>

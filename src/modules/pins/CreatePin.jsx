@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
@@ -55,6 +55,13 @@ const CreatePin = ({ user }) => {
         }
     };
 
+    useEffect(() => {
+        document.title = "Create pin";
+        return () => {
+            document.title = "ShareMe";
+        };
+    }, []);
+
     const savePin = async () => {
         await addDoc(collection(db, "posts"), {
             title,
@@ -68,9 +75,9 @@ const CreatePin = ({ user }) => {
 
     return (
         <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
-            <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5 w-full">
-                <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
-                    <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
+            <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5 w-full dark:bg-darkMode">
+                <div className="bg-secondaryColor p-3 flex flex-0.7 w-full rounded-lg">
+                    <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420 rounded-lg">
                         {loading && <Spinner />}
                         {wrongImageType && <p>Wrong image type</p>}
                         {!imageUrl ? (
@@ -121,17 +128,19 @@ const CreatePin = ({ user }) => {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="Enter title here"
-                        className="outline-none text-2xl sm:text-3xl font-bold border-b-2 border-gray-200 p-2"
+                        className="outline-none text-2xl sm:text-3xl font-bold border-2 border-gray-200 rounded-lg p-2 dark:bg-darkMode dark:border-[#3A3A43] dark:text-white"
                     />
 
                     {user && (
-                        <div className="flex gap-2 my-2 items-center bg-white rounded-lg">
+                        <div className="flex gap-2 my-2 items-center bg-white rounded-lg dark:bg-darkMode">
                             <img
                                 src={user?.avatar}
                                 className="w-10 h-10 rounded-full"
                                 alt="user-profile"
                             />
-                            <p className="font-bold">{user?.username}</p>
+                            <p className="font-bold dark:text-white">
+                                {user?.username}
+                            </p>
                         </div>
                     )}
 
@@ -140,12 +149,12 @@ const CreatePin = ({ user }) => {
                         value={about}
                         onChange={(e) => setAbout(e.target.value)}
                         placeholder="Enter your description"
-                        className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
+                        className="outline-none text-base sm:text-lg border-2 border-gray-200 rounded-lg p-2 dark:bg-darkMode dark:border-[#3A3A43] dark:text-white"
                     />
 
                     <div className="flex flex-col">
                         <div>
-                            <p className="mb-2 font-semibold text-lg sm:text-xl">
+                            <p className="mb-2 font-semibold text-lg sm:text-xl dark:text-white">
                                 Choose Pin Category
                             </p>
                             <select

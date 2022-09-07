@@ -7,7 +7,9 @@ const Spinner = ({ message }) => {
             <div className="m-5">
                 <Circles height="50" width="200" color="#00BFFF" />
             </div>
-            <p className="text-lg text-center px-2">{message}</p>
+            <p className="text-lg text-center px-2 dark:text-white">
+                {message}
+            </p>
         </div>
     );
 };
