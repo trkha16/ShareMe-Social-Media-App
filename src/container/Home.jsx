@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import logo from "../assets/logo.png";
 
 import { getUserInfo } from "../utils/fetchUser";
 import Sidebar from "../modules/home/Sidebar";
-import UserProfile from "../modules/users/UserProfile";
-import Pin from "../modules/pins/Pin";
+import Main from "../components/layout/Main";
 
 const Home = () => {
     const [toggleSidebar, setToggleSidebar] = useState(false);
@@ -63,16 +62,7 @@ const Home = () => {
                 className="pb-2 flex-1 h-screen overflow-y-scroll"
                 ref={scrollRef}
             >
-                <Routes>
-                    <Route
-                        path="/user-profile/:userId"
-                        element={<UserProfile />}
-                    />
-                    <Route
-                        path="/*"
-                        element={<Pin user={userInfo && userInfo} />}
-                    />
-                </Routes>
+                <Main userInfo={userInfo}></Main>
             </div>
         </div>
     );

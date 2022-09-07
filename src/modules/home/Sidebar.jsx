@@ -79,18 +79,3 @@ const Sidebar = ({ user, closeToggle }) => {
 };
 
 export default Sidebar;
-
-/* const categories = [
-    {
-        name: "Animals",
-    },
-    {
-        name: "Wallpapers",
-    },
-    {
-        name: "Gaming",
-    },
-    {
-        name: "Coding",
-    },
-]; */
