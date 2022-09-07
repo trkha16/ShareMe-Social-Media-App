@@ -51,13 +51,13 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
                 </Link>
                 <Link
                     to="create-pin"
-                    className="bg-black text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center dark:bg-red-500"
+                    className="bg-black text-white rounded-lg w-12 h-12 md:w-14 md:h-12 flex justify-center items-center dark:bg-red-500 dark:hover:bg-red-600"
                 >
                     <IoMdAdd />
                 </Link>
                 <div
                     onClick={handleToggleDarkMode}
-                    className="flex justify-center items-center border w-12 h-12 md:w-14 md:h-12 cursor-pointer hover:shadow-md rounded-lg dark:bg-red-500 dark:border-0 dark:text-white"
+                    className="flex justify-center items-center border w-12 h-12 md:w-14 md:h-12 cursor-pointer hover:shadow-md rounded-lg dark:bg-red-500 dark:border-0 dark:text-white dark:hover:bg-red-600"
                 >
                     {darkMode ? <MdDarkMode /> : <MdLightMode />}
                 </div>

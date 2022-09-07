@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "../../modules/home/Navbar";
 import Pin from "../../modules/pins/Pin";
+import UpdateUserProfile from "../../modules/users/UpdateUserProfile";
 import UserProfile from "../../modules/users/UserProfile";
 
 const Main = ({ userInfo }) => {
@@ -19,6 +20,10 @@ const Main = ({ userInfo }) => {
 
             <Routes>
                 <Route path="/user-profile/:userId" element={<UserProfile />} />
+                <Route
+                    path="/update-profile/:userId"
+                    element={<UpdateUserProfile />}
+                />
                 <Route
                     path="/*"
                     element={<Pin user={userInfo && userInfo} />}

@@ -5,7 +5,7 @@ import { BsFillArrowUpRightCircleFill } from "react-icons/bs";
 import { db } from "../../firebase/firebase-config";
 import { doc, getDoc } from "firebase/firestore";
 
-const Pin = ({ pin }) => {
+const Pin = ({ pin, userId = null }) => {
     const navigate = useNavigate();
     const [postHovered, setPostHovered] = useState(false);
     const [author, setAuthor] = useState(null);
@@ -87,19 +87,21 @@ const Pin = ({ pin }) => {
                 )}
             </div>
 
-            <Link
-                to={`/user-profile/${pin.authorId}`}
-                className="flex gap-2 mt-3 items-center"
-            >
-                <img
-                    src={author?.avatar}
-                    alt="author"
-                    className="w-8 h-8 rounded-full object-cover"
-                />
-                <p className="font-semibold capitalize dark:text-white">
-                    {author?.username}
-                </p>
-            </Link>
+            {!userId && (
+                <Link
+                    to={`/user-profile/${pin.authorId}`}
+                    className="flex gap-2 mt-3 items-center"
+                >
+                    <img
+                        src={author?.avatar}
+                        alt="author"
+                        className="w-8 h-8 rounded-full object-cover"
+                    />
+                    <p className="font-semibold capitalize dark:text-white">
+                        {author?.username}
+                    </p>
+                </Link>
+            )}
         </div>
     );
 };

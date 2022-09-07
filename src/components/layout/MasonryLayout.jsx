@@ -11,7 +11,7 @@ const breakpointObj = {
     500: 1,
 };
 
-const MasonryLayout = ({ pins }) => {
+const MasonryLayout = ({ pins, userId = null }) => {
     if (pins.length === 0)
         return (
             <div className="flex justify-center items-center mt-10">
@@ -25,7 +25,7 @@ const MasonryLayout = ({ pins }) => {
             breakpointCols={breakpointObj}
         >
             {pins?.map((pin) => (
-                <Pin key={pin.id} pin={pin} className="w-max" />
+                <Pin key={pin.id} pin={pin} userId={userId} className="w-max" />
             ))}
         </Masonry>
     );

@@ -19,9 +19,7 @@ const CreatePin = ({ user }) => {
     const navigate = useNavigate();
 
     const uploadImage = (files) => {
-        const { type, name } = files.target.files[0];
-        console.log("type", type);
-        console.log("name", name);
+        const { type } = files.target.files[0];
         if (
             type === "image/png" ||
             type === "image/svg" ||
@@ -63,14 +61,16 @@ const CreatePin = ({ user }) => {
     }, []);
 
     const savePin = async () => {
-        await addDoc(collection(db, "posts"), {
-            title,
-            about,
-            imageUrl,
-            category,
-            authorId: user?.googleId,
-        });
-        navigate("/");
+        if (title && about && category && imageUrl) {
+            await addDoc(collection(db, "posts"), {
+                title,
+                about,
+                imageUrl,
+                category,
+                authorId: user?.googleId,
+            });
+            navigate("/");
+        }
     };
 
     return (
@@ -180,7 +180,7 @@ const CreatePin = ({ user }) => {
                             <button
                                 type="button"
                                 onClick={savePin}
-                                className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none"
+                                className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none hover:bg-red-600"
                             >
                                 Save
                             </button>
