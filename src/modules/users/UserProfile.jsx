@@ -7,8 +7,8 @@ import Feed from "../home/Feed";
 
 const UserProfile = () => {
     const { userId } = useParams();
-    const [userInfo, setUserInfo] = useState(null);
     const { googleId } = getUserInfo();
+    const [userInfo, setUserInfo] = useState(null);
     const navigation = useNavigate();
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const UserProfile = () => {
                 <img
                     src={userInfo?.avatar}
                     alt="avatar"
-                    className="rounded-full object-cover cursor-pointer"
+                    className="w-20 h-20 rounded-full object-cover cursor-pointer"
                 />
                 <h1 className="text-3xl font-semibold mt-5 dark:text-white">
                     {userInfo?.username}

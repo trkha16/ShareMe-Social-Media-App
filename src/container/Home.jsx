@@ -53,7 +53,7 @@ const Home = () => {
                         <img
                             src={userInfo?.avatar}
                             alt="logo"
-                            className="w-28 rounded-full"
+                            className="w-16 rounded-full"
                         />
                     </Link>
                 </div>

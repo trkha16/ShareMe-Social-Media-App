@@ -8,18 +8,19 @@ import shareVideo from "../assets/share.mp4";
 import logo from "../assets/logowhite.png";
 import { useNavigate } from "react-router-dom";
 import { db } from "../firebase/firebase-config";
+import { userAvatar } from "../utils/data";
 
 const Login = () => {
     const navigate = useNavigate();
     const responseGoogle = async (response) => {
         const decoded = jwt_decode(response.credential);
 
-        const { name, sub, picture } = decoded;
+        const { name, sub } = decoded;
 
         const saveUser = {
             googleId: sub,
             username: name,
-            avatar: picture,
+            avatar: userAvatar,
         };
         localStorage.setItem("user", JSON.stringify(saveUser));
 
