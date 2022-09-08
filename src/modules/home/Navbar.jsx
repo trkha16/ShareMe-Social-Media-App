@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { IoMdAdd, IoMdSearch } from "react-icons/io";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
@@ -8,8 +8,6 @@ import { toggleDarkMode } from "../../redux/globalSlice";
 import useDarkMode from "../../hooks/useDarkMode";
 
 const Navbar = ({ searchTerm, setSearchTerm, user }) => {
-    const navigate = useNavigate();
-
     const [darkMode, setDarkMode] = useDarkMode();
     const dispatch = useDispatch();
 
@@ -34,7 +32,6 @@ const Navbar = ({ searchTerm, setSearchTerm, user }) => {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search"
                     value={searchTerm}
-                    onFocus={() => navigate("/search")}
                     className="p-2 w-full bg-white outline-none"
                 />
             </div>

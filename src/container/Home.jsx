@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle } from "react-icons/ai";
 import logo from "../assets/logo.png";
@@ -15,7 +15,15 @@ const Home = () => {
 
     const [toggleSidebar, setToggleSidebar] = useState(false);
     const scrollRef = useRef(null);
+    const navigate = useNavigate();
+
     const userInfo = getUserInfo();
+
+    useEffect(() => {
+        if (!userInfo) {
+            navigate("/login");
+        }
+    }, [userInfo, navigate]);
 
     useEffect(() => {
         scrollRef.current.scrollTo(0, 0);

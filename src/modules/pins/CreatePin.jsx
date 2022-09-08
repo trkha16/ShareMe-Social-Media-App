@@ -1,57 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { AiOutlineCloudUpload } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
 
 import { categories } from "../../utils/data";
 import { db } from "../../firebase/firebase-config";
-import Spinner from "../../components/spinner/Spinner";
+import UploadImage from "../../components/image/UploadImage";
+import useUploadImage from "../../hooks/useUploadImage";
 
 const CreatePin = ({ user }) => {
     const [title, setTitle] = useState("");
     const [about, setAbout] = useState("");
-    const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState(null);
-    const [imageUrl, setImageUrl] = useState(null);
-    const [wrongImageType, setWrongImageType] = useState(false);
+    const { loading, imageUrl, uploadImage, wrongImageType, setImageUrl } =
+        useUploadImage();
 
     const navigate = useNavigate();
-
-    const uploadImage = (files) => {
-        const { type } = files.target.files[0];
-        if (
-            type === "image/png" ||
-            type === "image/svg" ||
-            type === "image/jpeg" ||
-            type === "image/gif" ||
-            type === "image/tiff"
-        ) {
-            setWrongImageType(false);
-            setLoading(true);
-
-            const formData = new FormData();
-            formData.append("file", files.target.files[0]);
-            formData.append("upload_preset", "js2cwnpf");
-
-            fetch("https://api.cloudinary.com/v1_1/trkha1609/image/upload", {
-                method: "POST",
-                body: formData,
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.secure_url !== "") {
-                        setImageUrl(data.secure_url);
-                    }
-                })
-                .catch((err) => console.error(err));
-
-            setLoading(false);
-        } else {
-            setWrongImageType(true);
-            setLoading(false);
-        }
-    };
 
     useEffect(() => {
         document.title = "Create pin";
@@ -76,52 +39,13 @@ const CreatePin = ({ user }) => {
     return (
         <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
             <div className="flex lg:flex-row flex-col justify-center items-center bg-white lg:p-5 p-3 lg:w-4/5 w-full dark:bg-darkMode">
-                <div className="bg-secondaryColor p-3 flex flex-0.7 w-full rounded-lg">
-                    <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420 rounded-lg">
-                        {loading && <Spinner />}
-                        {wrongImageType && <p>Wrong image type</p>}
-                        {!imageUrl ? (
-                            <label>
-                                <div className="flex flex-col items-center justify-center h-full">
-                                    <div className="flex flex-col justify-center items-center">
-                                        <p className="font-bold text-2xl">
-                                            <AiOutlineCloudUpload />
-                                        </p>
-                                        <p className="text-lg">
-                                            Click to upload
-                                        </p>
-                                    </div>
-                                    <p className="mt-32 text-gray-400">
-                                        Use high-quality JPG, SVG, PNG, GIF or
-                                        TIFF less than 20mb
-                                    </p>
-                                </div>
-                                <input
-                                    type="file"
-                                    name="upload-image"
-                                    onChange={uploadImage}
-                                    className="w-0 h-0"
-                                />
-                            </label>
-                        ) : (
-                            <div className="relative h-full">
-                                <img
-                                    src={imageUrl}
-                                    alt="upload-img"
-                                    className="w-full h-full"
-                                />
-                                <button
-                                    type="button"
-                                    className="absolute bottom-3 right-3 p-3 rounded-full bg-white text-xl cursor-pointer outline-none hover:shadow-md transition-all duration-500 ease-in-out"
-                                    onClick={() => setImageUrl(null)}
-                                >
-                                    <MdDelete />
-                                </button>
-                            </div>
-                        )}
-                    </div>
-                </div>
-
+                <UploadImage
+                    loading={loading}
+                    imageUrl={imageUrl}
+                    uploadImage={uploadImage}
+                    wrongImageType={wrongImageType}
+                    setImageUrl={setImageUrl}
+                />
                 <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
                     <input
                         type="text"

@@ -2,7 +2,7 @@ export const getUserInfo = () => {
     const userInfo =
         localStorage.getItem("user") !== "undefined"
             ? JSON.parse(localStorage.getItem("user"))
-            : localStorage.clear();
+            : null;
 
     return userInfo;
 };

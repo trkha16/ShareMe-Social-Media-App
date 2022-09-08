@@ -28,6 +28,11 @@ const UserProfile = () => {
         };
     }, [userInfo?.username]);
 
+    const handleLogout = () => {
+        localStorage.removeItem("user");
+        navigation("/login");
+    };
+
     return (
         <div className="mt-10">
             <div className="flex flex-col justify-center items-center">
@@ -40,13 +45,25 @@ const UserProfile = () => {
                     {userInfo?.username}
                 </h1>
                 {googleId === userId && (
-                    <div
-                        className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer"
-                        onClick={() =>
-                            navigation(`/update-profile/${userInfo?.googleId}`)
-                        }
-                    >
-                        <p className="text-md font-semibold">Edit Profile</p>
+                    <div className="flex gap-5">
+                        <div
+                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer"
+                            onClick={() =>
+                                navigation(
+                                    `/update-profile/${userInfo?.googleId}`
+                                )
+                            }
+                        >
+                            <p className="text-md font-semibold">
+                                Edit Profile
+                            </p>
+                        </div>
+                        <div
+                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer"
+                            onClick={handleLogout}
+                        >
+                            <p className="text-md font-semibold">Logout</p>
+                        </div>
                     </div>
                 )}
             </div>
