@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import useGetUser from "../../hooks/useGetUser";
 import Feed from "../home/Feed";
 import Search from "../home/Search";
 import CreatePin from "./CreatePin";
 import PinDetail from "./PinDetail";
 
-const Pin = ({ user }) => {
+const Pin = ({ userId }) => {
     const [searchTerm, setSearchTerm] = useState("");
+
+    const { user } = useGetUser(userId);
 
     return (
         <div className="h-full">

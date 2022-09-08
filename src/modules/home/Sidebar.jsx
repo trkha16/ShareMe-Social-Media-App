@@ -5,14 +5,17 @@ import logo from "../../assets/logo.png";
 import logoWhite from "../../assets/logowhite.png";
 import { categories } from "../../utils/data";
 import { useSelector } from "react-redux";
+import useGetUser from "../../hooks/useGetUser";
 
 const isNotActiveStyle =
     "flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-all duration-200 ease-in-out capitalize dark:text-white dark:hover:text-red-400";
 const isActiveStyle =
     "flex items-center px-5 gap-3 text-gray-500 font-extrabold border-r-4 border-black transition-all duration-200 ease-in-out capitalize dark:text-red-500 dark:border-red-500";
 
-const Sidebar = ({ user, closeToggle }) => {
+const Sidebar = ({ userId, closeToggle }) => {
     const darkMode = useSelector((state) => state.global.darkMode);
+
+    const { user } = useGetUser(userId);
 
     const handleCloseSidebar = () => {
         if (closeToggle) closeToggle(false);
@@ -75,7 +78,7 @@ const Sidebar = ({ user, closeToggle }) => {
                     <img
                         src={user?.avatar}
                         alt={user?.username}
-                        className="w-10 h-10 rounded-full"
+                        className="w-10 h-10 rounded-full object-cover"
                     />
                     <p>{user?.username}</p>
                 </Link>

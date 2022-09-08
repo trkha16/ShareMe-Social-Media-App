@@ -5,7 +5,7 @@ import Pin from "../../modules/pins/Pin";
 import UpdateUserProfile from "../../modules/users/UpdateUserProfile";
 import UserProfile from "../../modules/users/UserProfile";
 
-const Main = ({ userInfo }) => {
+const Main = ({ userId }) => {
     const [searchTerm, setSearchTerm] = useState("");
 
     return (
@@ -14,7 +14,7 @@ const Main = ({ userInfo }) => {
                 <Navbar
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
-                    user={userInfo && userInfo}
+                    userId={userId}
                 />
             </div>
 
@@ -24,10 +24,7 @@ const Main = ({ userInfo }) => {
                     path="/update-profile/:userId"
                     element={<UpdateUserProfile />}
                 />
-                <Route
-                    path="/*"
-                    element={<Pin user={userInfo && userInfo} />}
-                />
+                <Route path="/*" element={<Pin userId={userId} />} />
             </Routes>
         </div>
     );

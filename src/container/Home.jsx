@@ -9,6 +9,8 @@ import { getUserInfo } from "../utils/fetchUser";
 import Sidebar from "../modules/home/Sidebar";
 import { useSelector } from "react-redux";
 import Main from "../components/layout/Main";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase-config";
 
 const Home = () => {
     const darkMode = useSelector((state) => state.global.darkMode);
@@ -18,6 +20,33 @@ const Home = () => {
     const navigate = useNavigate();
 
     const userInfo = getUserInfo();
+
+    useEffect(() => {
+        async function fetchUserFromDB() {
+            const docRef = doc(db, "users", userInfo?.googleId);
+            const docSnap = await getDoc(docRef);
+            return docSnap.data();
+        }
+
+        async function addUserToDB() {
+            fetchUserFromDB()
+                .then(async (data) => {
+                    if (!data) {
+                        await setDoc(
+                            doc(db, "users", userInfo?.googleId),
+                            userInfo
+                        );
+                    } else {
+                        localStorage.setItem("user", JSON.stringify(data));
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+
+        addUserToDB();
+    }, [userInfo]);
 
     useEffect(() => {
         if (!userInfo) {
@@ -32,7 +61,7 @@ const Home = () => {
     return (
         <div className="flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out dark:bg-darkMode">
             <div className="hidden md:flex h-screen flex-initial">
-                <Sidebar user={userInfo && userInfo} />
+                <Sidebar userId={userInfo?.googleId} />
             </div>
 
             <div className="flex md:hidden flex-row">
@@ -69,7 +98,7 @@ const Home = () => {
                         />
                     </div>
                     <Sidebar
-                        user={userInfo && userInfo}
+                        userId={userInfo?.googleId}
                         closeToggle={setToggleSidebar}
                     />
                 </div>
@@ -79,7 +108,7 @@ const Home = () => {
                 className="pb-2 flex-1 h-screen overflow-y-scroll"
                 ref={scrollRef}
             >
-                <Main userInfo={userInfo}></Main>
+                <Main userId={userInfo?.googleId}></Main>
             </div>
         </div>
     );

@@ -39,11 +39,14 @@ const UserProfile = () => {
                 <img
                     src={userInfo?.avatar}
                     alt="avatar"
-                    className="w-20 h-20 rounded-full object-cover cursor-pointer"
+                    className="w-[120px] h-[120px] rounded-full object-cover cursor-pointer"
                 />
                 <h1 className="text-3xl font-semibold mt-5 dark:text-white">
                     {userInfo?.username}
                 </h1>
+                <i className="text-lg font-semibold mt-5 text-gray-300">
+                    {userInfo?.description}
+                </i>
                 {googleId === userId && (
                     <div className="flex gap-5">
                         <div
