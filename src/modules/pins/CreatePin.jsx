@@ -1,20 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { collection, addDoc } from "firebase/firestore";
-
 import { categories } from "../../utils/data";
 import { db } from "../../firebase/firebase-config";
 import UploadImage from "../../components/image/UploadImage";
 import useUploadImage from "../../hooks/useUploadImage";
+import Input from "../../components/input/Input";
+import { toast } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const schema = yup
+    .object()
+    .shape({
+        title: yup.string().required("Please enter the title"),
+        about: yup.string().required("Please enter the description"),
+        category: yup.string().required("Please select the category"),
+    })
+    .required();
 
 const CreatePin = ({ user }) => {
-    const [title, setTitle] = useState("");
-    const [about, setAbout] = useState("");
-    const [category, setCategory] = useState(null);
     const { loading, imageUrl, uploadImage, wrongImageType, setImageUrl } =
         useUploadImage();
-
     const navigate = useNavigate();
+
+    const {
+        control,
+        handleSubmit,
+        setValue,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        mode: "onChange",
+        defaultValues: {
+            title: "",
+            about: "",
+            imageUrl: "",
+            category: "",
+            authorId: user?.googleId,
+        },
+        resolver: yupResolver(schema),
+    });
 
     useEffect(() => {
         document.title = "Create pin";
@@ -23,18 +49,37 @@ const CreatePin = ({ user }) => {
         };
     }, []);
 
-    const savePin = async () => {
-        if (title && about && category && imageUrl) {
-            await addDoc(collection(db, "posts"), {
-                title,
-                about,
-                imageUrl,
-                category,
-                authorId: user?.googleId,
+    const savePin = async (values) => {
+        if (!imageUrl) {
+            toast.error("Please choose image", {
+                pauseOnHover: false,
+                delay: 0,
+            });
+            return;
+        }
+
+        try {
+            const cloneValues = { ...values, imageUrl };
+            await addDoc(collection(db, "posts"), cloneValues);
+            toast.success("Success!!!", {
+                pauseOnHover: false,
+                delay: 0,
             });
             navigate("/");
+        } catch (error) {
+            console.log("Errors", error);
         }
     };
+
+    useEffect(() => {
+        const arrErrors = Object.values(errors);
+        if (arrErrors.length > 0) {
+            toast.error(arrErrors[0]?.message, {
+                pauseOnHover: false,
+                delay: 0,
+            });
+        }
+    }, [errors]);
 
     return (
         <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
@@ -46,13 +91,15 @@ const CreatePin = ({ user }) => {
                     wrongImageType={wrongImageType}
                     setImageUrl={setImageUrl}
                 />
-                <div className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full">
-                    <input
-                        type="text"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+
+                <form
+                    onSubmit={handleSubmit(savePin)}
+                    className="flex flex-1 flex-col gap-6 lg:pl-5 mt-5 w-full"
+                >
+                    <Input
+                        control={control}
                         placeholder="Enter title here"
-                        className="outline-none text-2xl sm:text-3xl font-bold border-2 border-gray-200 rounded-lg p-2 dark:bg-darkMode dark:border-[#3A3A43] dark:text-white"
+                        name="title"
                     />
 
                     {user && (
@@ -68,12 +115,10 @@ const CreatePin = ({ user }) => {
                         </div>
                     )}
 
-                    <input
-                        type="text"
-                        value={about}
-                        onChange={(e) => setAbout(e.target.value)}
+                    <Input
+                        control={control}
                         placeholder="Enter your description"
-                        className="outline-none text-base sm:text-lg border-2 border-gray-200 rounded-lg p-2 dark:bg-darkMode dark:border-[#3A3A43] dark:text-white"
+                        name="about"
                     />
 
                     <div className="flex flex-col">
@@ -82,12 +127,15 @@ const CreatePin = ({ user }) => {
                                 Choose Pin Category
                             </p>
                             <select
-                                onChange={(e) => setCategory(e.target.value)}
+                                onChange={(e) => {
+                                    setValue("category", e.target.value);
+                                }}
                                 className="outline-none w-4/5 text-base border-b-2 border-gray-200 p-2 rounded-md cursor-pointer"
                             >
                                 <option value="other" className="bg-white">
                                     Select Category
                                 </option>
+
                                 {categories.map((category) => (
                                     <option
                                         key={category.name}
@@ -102,15 +150,15 @@ const CreatePin = ({ user }) => {
 
                         <div className="flex justify-end items-end mt-5">
                             <button
-                                type="button"
-                                onClick={savePin}
+                                type="submit"
                                 className="bg-red-500 text-white font-bold p-2 rounded-full w-28 outline-none hover:bg-red-600"
+                                disabled={isSubmitting}
                             >
                                 Save
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     );
