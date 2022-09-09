@@ -1,46 +1,76 @@
+import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { MdDownloadForOffline } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import Button from "../../components/button/Button";
 import Spinner from "../../components/spinner/Spinner";
+import { db } from "../../firebase/firebase-config";
+import useGetUser from "../../hooks/useGetUser";
+import Feed from "../home/Feed";
 
-const PinDetail = ({ user }) => {
+const PinDetail = () => {
     const [pins, setPins] = useState(null);
     const [pinDetail, setPinDetail] = useState(null);
     const [comment, setComment] = useState("");
     const [addingComment, setAddingComment] = useState(false);
     const { pinId } = useParams();
 
-    const fetchPinDetails = () => {};
+    const { user: author } = useGetUser(pinDetail?.authorId);
 
     useEffect(() => {
-        fetchPinDetails();
+        async function fetchPinDetails(pinId) {
+            const docRef = doc(db, "posts", pinId);
+            const docSnap = await getDoc(docRef);
+            setPinDetail(docSnap.data());
+        }
+
+        fetchPinDetails(pinId);
     }, [pinId]);
 
     if (!pinDetail) return <Spinner message="Loading..." />;
 
     return (
-        <div className="flex xl:flex-row flex-col m-auto bg-white max-w-[1500px] rounded-[32px]">
-            <div className="flex justify-center items-center md:items-start flex-initial">
-                <img
-                    src=""
-                    alt="details img"
-                    className="rounded-t-3xl rounded-b-lg"
-                />
-            </div>
+        <div>
+            <div className="flex xl:flex-row flex-col m-auto bg-white max-w-[1000px] rounded-[32px] p-5 shadow-2xl border-2">
+                <div className="flex flex-1 justify-center items-center md:items-start max-h-[520px]">
+                    <img
+                        src={pinDetail?.imageUrl}
+                        alt="details img"
+                        className="rounded-t-3xl rounded-b-lg w-full h-full object-cover"
+                    />
+                </div>
 
-            <div className="w-full p-5 flex-1 xl:min-w-620">
-                <div className="flex items-center justify-between">
-                    <div className="flex gap-2 items-center">
-                        <a
-                            href="/"
-                            download
-                            onClick={(e) => e.stopPropagation()}
-                            className="bg-white w-9 h-9 rounded-full flex items-center justify-center text-dark text-xl opacity-75 hover:opacity-100 hover:shadow-md outline-none"
-                        >
-                            <MdDownloadForOffline />
-                        </a>
+                <div className=" flex w-full p-5 flex-1">
+                    <div className="flex flex-col w-full">
+                        <h1 className="text-[#111111] font-bold text-4xl">
+                            {pinDetail?.title}
+                        </h1>
+                        <p className="text-[#111111] text-sm mt-2 max-h-[70px] overflow-y-scroll">
+                            {pinDetail?.about}
+                        </p>
+
+                        <div className="flex mt-5 justify-between items-center w-full">
+                            <div className="flex gap-2">
+                                <img
+                                    src={author?.avatar}
+                                    alt="author"
+                                    className="w-12 h-12 rounded-full object-cover"
+                                />
+
+                                <div className="flex flex-col">
+                                    <h3>{author?.username}</h3>
+                                    <p>0 followers</p>
+                                </div>
+                            </div>
+
+                            <Button>Follow</Button>
+                        </div>
                     </div>
                 </div>
+            </div>
+
+            <div className="mt-10">
+                <Feed categoryRelate={pinDetail?.category} />
             </div>
         </div>
     );

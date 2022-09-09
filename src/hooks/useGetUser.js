@@ -7,12 +7,18 @@ export default function useGetUser(userId) {
 
     useEffect(() => {
         async function fetchUser(userId) {
-            const docRef = doc(db, "users", userId);
-            const docSnap = await getDoc(docRef);
-            setUser(docSnap.data());
+            try {
+                const docRef = doc(db, "users", userId);
+                const docSnap = await getDoc(docRef);
+                setUser(docSnap.data());
+            } catch (error) {
+                console.log(error);
+            }
         }
 
-        fetchUser(userId);
+        if (userId) {
+            fetchUser(userId);
+        }
     }, [userId]);
 
     return {

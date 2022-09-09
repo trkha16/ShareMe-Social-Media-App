@@ -5,7 +5,7 @@ import MasonryLayout from "../../components/layout/MasonryLayout";
 import Spinner from "../../components/spinner/Spinner";
 import { db } from "../../firebase/firebase-config";
 
-const Feed = ({ userId = null }) => {
+const Feed = ({ userId = null, categoryRelate }) => {
     const [loading, setLoading] = useState(false);
     const [pins, setPins] = useState(null);
     const { categoryId } = useParams();
@@ -27,6 +27,11 @@ const Feed = ({ userId = null }) => {
                     collection(db, "posts"),
                     where("authorId", "==", userId)
                 );
+            } else if (categoryRelate) {
+                q = query(
+                    collection(db, "posts"),
+                    where("category", "==", categoryRelate)
+                );
             }
 
             const querySnapshot = await getDocs(q);
@@ -42,7 +47,7 @@ const Feed = ({ userId = null }) => {
         }
 
         fetchData();
-    }, [categoryId, userId]);
+    }, [categoryId, userId, categoryRelate]);
 
     if (loading)
         return <Spinner message="We are adding new ideas to your feed!" />;

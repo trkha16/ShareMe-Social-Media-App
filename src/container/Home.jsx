@@ -16,7 +16,6 @@ const Home = () => {
     const darkMode = useSelector((state) => state.global.darkMode);
 
     const [toggleSidebar, setToggleSidebar] = useState(false);
-    const scrollRef = useRef(null);
     const navigate = useNavigate();
 
     const userInfo = getUserInfo();
@@ -54,6 +53,7 @@ const Home = () => {
         }
     }, [userInfo, navigate]);
 
+    const scrollRef = useRef(null);
     useEffect(() => {
         scrollRef.current.scrollTo(0, 0);
     }, []);
