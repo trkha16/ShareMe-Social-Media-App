@@ -12,6 +12,7 @@ const PinDetail = () => {
     const [pins, setPins] = useState(null);
     const [pinDetail, setPinDetail] = useState(null);
     const [comment, setComment] = useState("");
+    const [readMore, setReadMore] = useState(false);
     const [addingComment, setAddingComment] = useState(false);
     const { pinId } = useParams();
 
@@ -45,9 +46,8 @@ const PinDetail = () => {
                         <h1 className="text-[#111111] font-bold text-4xl">
                             {pinDetail?.title}
                         </h1>
-                        <p className="text-[#111111] text-sm mt-2 max-h-[70px] overflow-y-scroll">
-                            {pinDetail?.about}
-                        </p>
+
+                        <ReadMore>{pinDetail?.about}</ReadMore>
 
                         <div className="flex mt-5 justify-between items-center w-full">
                             <div className="flex gap-2">
@@ -77,3 +77,25 @@ const PinDetail = () => {
 };
 
 export default PinDetail;
+
+const ReadMore = ({ children }) => {
+    const content = children;
+    const maxLength = 200;
+    const [isReadMore, setIsReadMore] = useState(content.length > maxLength);
+
+    return (
+        <div>
+            <p className="text-[#111111] text-sm">
+                {isReadMore ? content.slice(0, maxLength) + "..." : content}
+                {content.length > maxLength && (
+                    <span
+                        onClick={() => setIsReadMore(!isReadMore)}
+                        className="font-semibold cursor-pointer hover:border-b-2 hover:border-black"
+                    >
+                        {isReadMore ? " Read more" : " Show less"}
+                    </span>
+                )}
+            </p>
+        </div>
+    );
+};
