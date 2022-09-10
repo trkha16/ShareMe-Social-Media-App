@@ -1,7 +1,6 @@
 import { doc, getDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { MdDownloadForOffline } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/button/Button";
 import Spinner from "../../components/spinner/Spinner";
 import { db } from "../../firebase/firebase-config";
@@ -9,12 +8,9 @@ import useGetUser from "../../hooks/useGetUser";
 import Feed from "../home/Feed";
 
 const PinDetail = () => {
-    const [pins, setPins] = useState(null);
     const [pinDetail, setPinDetail] = useState(null);
-    const [comment, setComment] = useState("");
-    const [readMore, setReadMore] = useState(false);
-    const [addingComment, setAddingComment] = useState(false);
     const { pinId } = useParams();
+    const navigate = useNavigate();
 
     const { user: author } = useGetUser(pinDetail?.authorId);
 
@@ -32,18 +28,20 @@ const PinDetail = () => {
 
     return (
         <div>
-            <div className="flex xl:flex-row flex-col m-auto bg-white max-w-[1000px] rounded-[32px] p-5 shadow-2xl border-2">
-                <div className="flex flex-1 justify-center items-center md:items-start max-h-[520px]">
-                    <img
-                        src={pinDetail?.imageUrl}
-                        alt="details img"
-                        className="rounded-t-3xl rounded-b-lg w-full h-full object-cover"
-                    />
+            <div className="flex xl:flex-row flex-col m-auto bg-white max-w-[1000px] rounded-[32px] p-5 shadow-2xl border-2 dark:bg-[#22222C] dark:border-none">
+                <div className="flex-1 h-full">
+                    <div className="flex justify-center items-center md:items-start h-full shadow-lg cursor-pointer">
+                        <img
+                            src={pinDetail?.imageUrl}
+                            alt="details img"
+                            className="rounded-3xl w-full h-full object-cover"
+                        />
+                    </div>
                 </div>
 
                 <div className=" flex w-full p-5 flex-1">
                     <div className="flex flex-col w-full">
-                        <h1 className="text-[#111111] font-bold text-4xl">
+                        <h1 className="text-[#111111] font-bold text-4xl mb-5 dark:text-white">
                             {pinDetail?.title}
                         </h1>
 
@@ -54,12 +52,28 @@ const PinDetail = () => {
                                 <img
                                     src={author?.avatar}
                                     alt="author"
-                                    className="w-12 h-12 rounded-full object-cover"
+                                    className="w-12 h-12 rounded-full object-cover cursor-pointer"
+                                    onClick={() =>
+                                        navigate(
+                                            `/user-profile/${author?.googleId}`
+                                        )
+                                    }
                                 />
 
                                 <div className="flex flex-col">
-                                    <h3>{author?.username}</h3>
-                                    <p>0 followers</p>
+                                    <h3
+                                        className="cursor-pointer dark:text-gray-300 text-lg"
+                                        onClick={() =>
+                                            navigate(
+                                                `/user-profile/${author?.googleId}`
+                                            )
+                                        }
+                                    >
+                                        {author?.username}
+                                    </h3>
+                                    <p className="dark:text-gray-300 text-sm">
+                                        0 followers
+                                    </p>
                                 </div>
                             </div>
 
@@ -70,6 +84,9 @@ const PinDetail = () => {
             </div>
 
             <div className="mt-10">
+                <h1 className="text-center text-4xl font-bold mb-5 dark:text-white">
+                    Related Posts
+                </h1>
                 <Feed categoryRelate={pinDetail?.category} />
             </div>
         </div>
@@ -85,7 +102,7 @@ const ReadMore = ({ children }) => {
 
     return (
         <div>
-            <p className="text-[#111111] text-sm">
+            <p className="text-[#111111] text-sm dark:text-gray-300">
                 {isReadMore ? content.slice(0, maxLength) + "..." : content}
                 {content.length > maxLength && (
                     <span

@@ -80,20 +80,22 @@ const UpdateUserProfile = () => {
 
     return (
         <div className="flex flex-col justify-center items-center mt-10">
-            <div className="w-[120px] h-[120px] rounded-full bg-red-500 flex justify-center items-center cursor-pointer">
-                <label className="w-full h-full rounded-full cursor-pointer z-10">
-                    <img
-                        src={imageUrl}
-                        alt="avatar"
-                        className="w-full h-full rounded-full object-cover cursor-pointer"
-                    />
-                    <input
-                        type="file"
-                        name="upload-image"
-                        onChange={uploadImage}
-                        className="w-0 h-0"
-                    />
-                </label>
+            <div className="dark:bg-white p-2 rounded-full bg-hoverE2">
+                <div className="w-[120px] h-[120px] rounded-full flex justify-center items-center cursor-pointer">
+                    <label className="w-full h-full rounded-full cursor-pointer z-10">
+                        <img
+                            src={imageUrl}
+                            alt="avatar"
+                            className="w-full h-full rounded-full object-cover cursor-pointer"
+                        />
+                        <input
+                            type="file"
+                            name="upload-image"
+                            onChange={uploadImage}
+                            className="w-0 h-0"
+                        />
+                    </label>
+                </div>
             </div>
 
             <form

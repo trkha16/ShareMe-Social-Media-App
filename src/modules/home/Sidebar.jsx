@@ -72,7 +72,7 @@ const Sidebar = ({ userId, closeToggle }) => {
             {user && (
                 <Link
                     to={`user-profile/${user.googleId}`}
-                    className="flex my-5 mt-0 mb-3 gap-2 p-2 items-center bg-white rounded-lg shadow-lg mx-3 dark:bg-[#24242C] dark:text-white"
+                    className="flex my-5 mt-0 mb-3 gap-2 p-2 items-center bg-white rounded-lg shadow-lg mx-3 hover:bg-hoverE2 dark:bg-[#24242C] dark:text-white dark:hover:bg-[#3A3A43]"
                     onClick={handleCloseSidebar}
                 >
                     <img

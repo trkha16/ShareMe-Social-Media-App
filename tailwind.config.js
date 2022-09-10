@@ -50,6 +50,8 @@ module.exports = {
                 blackOverlay: "rgba(0, 0 ,0 ,0.7)",
                 blackImageOverlay: "rgba(0, 0 ,0 ,0.3)",
                 darkMode: "#1C1C24",
+                hoverE2: "#e2e2e2",
+                hoverEF: "#efefef",
             },
             keyframes: {
                 "slide-in": {

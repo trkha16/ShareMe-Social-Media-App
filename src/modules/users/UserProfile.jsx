@@ -36,21 +36,24 @@ const UserProfile = () => {
     return (
         <div className="mt-10">
             <div className="flex flex-col justify-center items-center">
-                <img
-                    src={userInfo?.avatar}
-                    alt="avatar"
-                    className="w-[120px] h-[120px] rounded-full object-cover cursor-pointer"
-                />
+                <div className="rounded-full p-2 bg-hoverE2 dark:bg-white">
+                    <img
+                        src={userInfo?.avatar}
+                        alt="avatar"
+                        className="w-[120px] h-[120px] rounded-full object-cover cursor-pointer"
+                    />
+                </div>
+
                 <h1 className="text-3xl font-semibold mt-5 dark:text-white">
                     {userInfo?.username}
                 </h1>
-                <i className="text-lg font-semibold mt-5 text-gray-300">
+                <i className="text-lg font-semibold mt-5 text-gray-400">
                     {userInfo?.description}
                 </i>
                 {googleId === userId && (
                     <div className="flex gap-5">
                         <div
-                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer"
+                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer dark:hover:bg-hoverE2"
                             onClick={() =>
                                 navigation(
                                     `/update-profile/${userInfo?.googleId}`
@@ -62,7 +65,7 @@ const UserProfile = () => {
                             </p>
                         </div>
                         <div
-                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer"
+                            className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer dark:hover:bg-hoverE2"
                             onClick={handleLogout}
                         >
                             <p className="text-md font-semibold">Logout</p>

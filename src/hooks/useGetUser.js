@@ -1,9 +1,11 @@
 import { doc, getDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "../firebase/firebase-config";
+import { getUserInfo } from "../utils/fetchUser";
 
 export default function useGetUser(userId) {
     const [user, setUser] = useState();
+    const userLocal = getUserInfo();
 
     useEffect(() => {
         async function fetchUser(userId) {
@@ -19,7 +21,7 @@ export default function useGetUser(userId) {
         if (userId) {
             fetchUser(userId);
         }
-    }, [userId]);
+    }, [userId, userLocal]);
 
     return {
         user,
