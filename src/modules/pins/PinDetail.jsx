@@ -1,16 +1,21 @@
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
+import { AiOutlineHeart } from "react-icons/ai";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../components/button/Button";
 import Spinner from "../../components/spinner/Spinner";
 import { db } from "../../firebase/firebase-config";
 import useGetUser from "../../hooks/useGetUser";
+import { getUserInfo } from "../../utils/fetchUser";
+
 import Feed from "../home/Feed";
 
 const PinDetail = () => {
     const [pinDetail, setPinDetail] = useState(null);
+    const [loved, setLoved] = useState(null);
     const { pinId } = useParams();
     const navigate = useNavigate();
+    const userId = getUserInfo()?.googleId;
 
     const { user: author } = useGetUser(pinDetail?.authorId);
 
@@ -19,10 +24,36 @@ const PinDetail = () => {
             const docRef = doc(db, "posts", pinId);
             const docSnap = await getDoc(docRef);
             setPinDetail(docSnap.data());
+            setLoved(docSnap.data()?.loved);
         }
 
         fetchPinDetails(pinId);
-    }, [pinId]);
+    }, [pinId, loved]);
+
+    const lovePin = async () => {
+        let lovedUsers = pinDetail?.lovedUsers;
+
+        const loveExist = lovedUsers.includes(Number(userId));
+
+        if (!loveExist) {
+            lovedUsers.push(Number(userId));
+            setLoved((prev) => prev + 1);
+        } else {
+            lovedUsers = lovedUsers.filter((item) => item !== Number(userId));
+            setLoved((prev) => prev - 1);
+        }
+
+        try {
+            const cloneValues = {
+                ...pinDetail,
+                loved: loveExist ? loved - 1 : loved + 1,
+                lovedUsers: lovedUsers,
+            };
+            await setDoc(doc(db, "posts", pinId), cloneValues);
+        } catch (error) {
+            console.log("Errors", error);
+        }
+    };
 
     if (!pinDetail) return <Spinner message="Loading..." />;
 
@@ -41,6 +72,18 @@ const PinDetail = () => {
 
                 <div className=" flex w-full p-5 flex-1">
                     <div className="flex flex-col w-full">
+                        <div
+                            className={`flex items-center justify-center gap-1 ml-auto cursor-pointer px-3 py-2 rounded-xl text-white ${
+                                pinDetail?.lovedUsers.includes(Number(userId))
+                                    ? "bg-red-600"
+                                    : "bg-slate-600"
+                            }`}
+                            onClick={lovePin}
+                        >
+                            <AiOutlineHeart />
+                            <span>{loved}</span>
+                        </div>
+
                         <h1 className="text-[#111111] font-bold text-4xl mb-5 dark:text-white">
                             {pinDetail?.title}
                         </h1>

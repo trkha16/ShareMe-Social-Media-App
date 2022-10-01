@@ -59,7 +59,12 @@ const CreatePin = ({ user }) => {
         }
 
         try {
-            const cloneValues = { ...values, imageUrl };
+            const cloneValues = {
+                ...values,
+                imageUrl,
+                loved: 0,
+                lovedUsers: [],
+            };
             await addDoc(collection(db, "posts"), cloneValues);
             toast.success("Success!!!", {
                 pauseOnHover: false,
@@ -106,7 +111,7 @@ const CreatePin = ({ user }) => {
                         <div className="flex gap-2 my-2 items-center bg-white rounded-lg dark:bg-darkMode">
                             <img
                                 src={user?.avatar}
-                                className="w-10 h-10 rounded-full"
+                                className="w-10 h-10 rounded-full object-cover"
                                 alt="user-profile"
                             />
                             <p className="font-bold dark:text-white">
