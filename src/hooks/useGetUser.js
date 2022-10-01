@@ -21,7 +21,7 @@ export default function useGetUser(userId) {
         if (userId) {
             fetchUser(userId);
         }
-    }, [userId, userLocal]);
+    }, [userId]);
 
     return {
         user,

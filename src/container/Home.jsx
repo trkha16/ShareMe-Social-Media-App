@@ -82,7 +82,7 @@ const Home = () => {
                         <img
                             src={userInfo?.avatar}
                             alt="logo"
-                            className="w-16 rounded-full"
+                            className="w-16 h-16 rounded-full object-cover"
                         />
                     </Link>
                 </div>
