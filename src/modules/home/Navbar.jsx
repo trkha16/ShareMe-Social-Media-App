@@ -14,6 +14,8 @@ const Navbar = ({ searchTerm, setSearchTerm, userId }) => {
 
     const { user } = useGetUser(userId);
 
+    console.log("navbar hooks");
+
     useEffect(() => {
         dispatch(toggleDarkMode(!darkMode));
         // eslint-disable-next-line react-hooks/exhaustive-deps

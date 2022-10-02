@@ -17,6 +17,8 @@ const Sidebar = ({ userId, closeToggle }) => {
 
     const { user } = useGetUser(userId);
 
+    console.log("sidebar hooks");
+
     const handleCloseSidebar = () => {
         if (closeToggle) closeToggle(false);
     };

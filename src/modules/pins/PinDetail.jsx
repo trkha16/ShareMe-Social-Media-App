@@ -19,6 +19,8 @@ const PinDetail = () => {
 
     const { user: author } = useGetUser(pinDetail?.authorId);
 
+    console.log("pindetails hooks");
+
     useEffect(() => {
         async function fetchPinDetails(pinId) {
             const docRef = doc(db, "posts", pinId);
