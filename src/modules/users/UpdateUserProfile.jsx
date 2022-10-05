@@ -13,13 +13,13 @@ import { db } from "../../firebase/firebase-config";
 const schema = yup
     .object()
     .shape({
-        username: yup.string().required("Please enter your name"),
+        fullname: yup.string().required("Please enter your fullname"),
     })
     .required();
 
 const UpdateUserProfile = () => {
     const { userId } = useParams();
-    const { googleId, avatar, username, description } = getUserInfo();
+    const userInfo = getUserInfo();
     const { imageUrl, uploadImage, setImageUrl } = useUploadImage();
     const navigate = useNavigate();
 
@@ -30,17 +30,19 @@ const UpdateUserProfile = () => {
     } = useForm({
         mode: "onChange",
         defaultValues: {
-            username: username,
-            description: description,
+            fullname: userInfo?.fullname,
+            description: userInfo?.description,
             avatar: imageUrl,
-            googleId: googleId,
+            id: userInfo?.id,
         },
         resolver: yupResolver(schema),
     });
 
     const handleSubmitProfile = async (values) => {
+        console.log(userInfo);
         try {
             const cloneValues = {
+                ...userInfo,
                 ...values,
                 avatar: imageUrl,
             };
@@ -70,13 +72,13 @@ const UpdateUserProfile = () => {
 
     useEffect(() => {
         document.title = "Edit profile";
-        setImageUrl(avatar);
+        setImageUrl(userInfo?.avatar);
         return () => {
             document.title = "ShareMe";
         };
-    }, [avatar, setImageUrl]);
+    }, [userInfo?.avatar, setImageUrl]);
 
-    if (userId !== googleId) return null;
+    if (userId !== userInfo?.id) return null;
 
     return (
         <div className="flex flex-col justify-center items-center mt-10">
@@ -104,8 +106,8 @@ const UpdateUserProfile = () => {
             >
                 <Input
                     control={control}
-                    placeholder="Enter your name"
-                    name="username"
+                    placeholder="Enter your fullname"
+                    name="fullname"
                 />
 
                 <Input

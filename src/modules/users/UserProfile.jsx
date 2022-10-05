@@ -7,7 +7,7 @@ import Feed from "../home/Feed";
 
 const UserProfile = () => {
     const { userId } = useParams();
-    const { googleId } = getUserInfo();
+    const { id } = getUserInfo();
     const [userInfo, setUserInfo] = useState(null);
     const navigation = useNavigate();
 
@@ -22,11 +22,11 @@ const UserProfile = () => {
     }, [userId]);
 
     useEffect(() => {
-        document.title = userInfo?.username || "ShareMe";
+        document.title = userInfo?.fullname || "ShareMe";
         return () => {
             document.title = "ShareMe";
         };
-    }, [userInfo?.username]);
+    }, [userInfo?.fullname]);
 
     const handleLogout = () => {
         localStorage.removeItem("user");
@@ -45,19 +45,17 @@ const UserProfile = () => {
                 </div>
 
                 <h1 className="text-3xl font-semibold mt-5 dark:text-white">
-                    {userInfo?.username}
+                    {userInfo?.fullname}
                 </h1>
                 <i className="text-lg font-semibold mt-5 text-gray-400">
                     {userInfo?.description}
                 </i>
-                {googleId === userId && (
+                {id === userId && (
                     <div className="flex gap-5">
                         <div
                             className="flex justify-center items-center text-black bg-[#efefef] hover:bg-[#e2e2e2] dark:bg-white px-4 py-2 rounded-full mt-5 cursor-pointer dark:hover:bg-hoverE2"
                             onClick={() =>
-                                navigation(
-                                    `/update-profile/${userInfo?.googleId}`
-                                )
+                                navigation(`/update-profile/${userInfo?.id}`)
                             }
                         >
                             <p className="text-md font-semibold">
@@ -75,7 +73,7 @@ const UserProfile = () => {
             </div>
 
             <div className="mt-10">
-                <Feed userId={userInfo?.googleId} />
+                <Feed userId={userInfo?.id} />
             </div>
         </div>
     );

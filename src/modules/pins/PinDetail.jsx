@@ -15,11 +15,9 @@ const PinDetail = () => {
     const [loved, setLoved] = useState(null);
     const { pinId } = useParams();
     const navigate = useNavigate();
-    const userId = getUserInfo()?.googleId;
+    const userId = getUserInfo()?.id;
 
     const { user: author } = useGetUser(pinDetail?.authorId);
-
-    console.log("pindetails hooks");
 
     useEffect(() => {
         async function fetchPinDetails(pinId) {
@@ -99,9 +97,7 @@ const PinDetail = () => {
                                     alt="author"
                                     className="w-12 h-12 rounded-full object-cover cursor-pointer"
                                     onClick={() =>
-                                        navigate(
-                                            `/user-profile/${author?.googleId}`
-                                        )
+                                        navigate(`/user-profile/${author?.id}`)
                                     }
                                 />
 
@@ -110,7 +106,7 @@ const PinDetail = () => {
                                         className="cursor-pointer dark:text-gray-300 text-lg"
                                         onClick={() =>
                                             navigate(
-                                                `/user-profile/${author?.googleId}`
+                                                `/user-profile/${author?.id}`
                                             )
                                         }
                                     >

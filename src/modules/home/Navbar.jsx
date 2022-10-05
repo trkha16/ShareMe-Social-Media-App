@@ -6,15 +6,13 @@ import { MdDarkMode, MdLightMode } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { toggleDarkMode } from "../../redux/globalSlice";
 import useDarkMode from "../../hooks/useDarkMode";
-import useGetUser from "../../hooks/useGetUser";
+import { getUserInfo } from "../../utils/fetchUser";
 
 const Navbar = ({ searchTerm, setSearchTerm, userId }) => {
     const [darkMode, setDarkMode] = useDarkMode();
     const dispatch = useDispatch();
 
-    const { user } = useGetUser(userId);
-
-    console.log("navbar hooks");
+    const user = getUserInfo();
 
     useEffect(() => {
         dispatch(toggleDarkMode(!darkMode));
@@ -42,7 +40,7 @@ const Navbar = ({ searchTerm, setSearchTerm, userId }) => {
             </div>
             <div className="flex gap-3">
                 <Link
-                    to={`user-profile/${user?.googleId}`}
+                    to={`user-profile/${user?.id}`}
                     className="hidden md:block rounded-lg shadow-lg"
                 >
                     <img

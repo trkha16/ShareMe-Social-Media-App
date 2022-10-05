@@ -9,7 +9,14 @@ import { getUserInfo } from "../utils/fetchUser";
 import Sidebar from "../modules/home/Sidebar";
 import { useSelector } from "react-redux";
 import Main from "../components/layout/Main";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDocs,
+    query,
+    setDoc,
+    where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 
 const Home = () => {
@@ -20,32 +27,40 @@ const Home = () => {
 
     const userInfo = getUserInfo();
 
-    useEffect(() => {
-        async function fetchUserFromDB() {
-            const docRef = doc(db, "users", userInfo?.googleId);
-            const docSnap = await getDoc(docRef);
-            return docSnap.data();
-        }
+    // useEffect(() => {
+    //     async function fetchUserFromDB() {
+    //         const q = query(
+    //             collection(db, "users"),
+    //             where("username", "==", userInfo?.username)
+    //         );
 
-        async function addUserToDB() {
-            fetchUserFromDB()
-                .then(async (data) => {
-                    if (!data) {
-                        await setDoc(
-                            doc(db, "users", userInfo?.googleId),
-                            userInfo
-                        );
-                    } else {
-                        localStorage.setItem("user", JSON.stringify(data));
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        }
+    //         const querySnapshot = await getDocs(q);
+    //         const results = [];
+    //         querySnapshot.forEach((doc) => {
+    //             results.push({
+    //                 ...doc.data(),
+    //             });
+    //         });
 
-        addUserToDB();
-    }, [userInfo]);
+    //         return results?.length > 0;
+    //     }
+
+    //     async function addUserToDB() {
+    //         fetchUserFromDB()
+    //             .then(async (data) => {
+    //                 if (!data) {
+    //                     await setDoc(doc(db, "users", userInfo?.id), userInfo);
+    //                 } else {
+    //                     localStorage.setItem("user", JSON.stringify(userInfo));
+    //                 }
+    //             })
+    //             .catch((err) => {
+    //                 console.log(err);
+    //             });
+    //     }
+
+    //     addUserToDB();
+    // }, [userInfo]);
 
     useEffect(() => {
         if (!userInfo) {
@@ -61,7 +76,7 @@ const Home = () => {
     return (
         <div className="flex bg-gray-50 md:flex-row flex-col h-screen transaction-height duration-75 ease-out dark:bg-darkMode">
             <div className="hidden md:flex h-screen flex-initial">
-                <Sidebar userId={userInfo?.googleId} />
+                <Sidebar userId={userInfo?.id} />
             </div>
 
             <div className="flex md:hidden flex-row">
@@ -78,7 +93,7 @@ const Home = () => {
                             className="w-28"
                         />
                     </Link>
-                    <Link to={`user-profile/${userInfo?.googleId}`}>
+                    <Link to={`user-profile/${userInfo?.id}`}>
                         <img
                             src={userInfo?.avatar}
                             alt="logo"
@@ -98,7 +113,7 @@ const Home = () => {
                         />
                     </div>
                     <Sidebar
-                        userId={userInfo?.googleId}
+                        userId={userInfo?.id}
                         closeToggle={setToggleSidebar}
                     />
                 </div>
@@ -108,7 +123,7 @@ const Home = () => {
                 className="pb-2 flex-1 h-screen overflow-y-scroll"
                 ref={scrollRef}
             >
-                <Main userId={userInfo?.googleId}></Main>
+                <Main userId={userInfo?.id}></Main>
             </div>
         </div>
     );

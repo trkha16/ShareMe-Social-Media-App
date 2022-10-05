@@ -3,16 +3,19 @@ import { toast } from "react-toastify";
 import shareVideo from "../assets/share.mp4";
 import logo from "../assets/logowhite.png";
 import { Link, useNavigate } from "react-router-dom";
+import { userAvatar } from "../utils/data";
 import Input from "../components/input/Input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { v4 as uuidv4 } from "uuid";
+import { doc, setDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 
 const schema = yup
     .object()
     .shape({
+        fullname: yup.string().required("Please enter fullname"),
         username: yup.string().required("Please enter username"),
         password: yup.string().required("Please enter password"),
     })
@@ -25,41 +28,30 @@ const Login = () => {
         control,
         handleSubmit,
         formState: { errors, isSubmitting },
-        reset,
     } = useForm({
         mode: "onChange",
         defaultValues: {
+            fullname: "",
             username: "",
             password: "",
         },
         resolver: yupResolver(schema),
     });
 
-    const handleLogin = async (values) => {
-        const q = query(
-            collection(db, "users"),
-            where("username", "==", values?.username),
-            where("password", "==", values?.password)
-        );
+    const handleSaveUser = async (values) => {
+        const saveUser = {
+            id: uuidv4(),
+            username: values?.username,
+            fullname: values?.fullname,
+            description: "@" + values?.username,
+            avatar: userAvatar,
+            password: values?.password,
+        };
 
-        const querySnapshot = await getDocs(q);
-        const results = [];
-        querySnapshot.forEach((doc) => {
-            results.push({
-                ...doc.data(),
-            });
-        });
-
-        if (results?.length > 0) {
-            localStorage.setItem("user", JSON.stringify(results[0]));
-            toast.success("Success!!!", { pauseOnHover: false });
-            navigate("/");
-        } else {
-            toast.error("Wrong username or password", {
-                pauseOnHover: false,
-            });
-            reset();
-        }
+        localStorage.setItem("user", JSON.stringify(saveUser));
+        await setDoc(doc(db, "users", saveUser?.id), saveUser);
+        toast.success("Success!!!", { pauseOnHover: false });
+        navigate("/");
     };
 
     useEffect(() => {
@@ -73,7 +65,7 @@ const Login = () => {
     }, [errors]);
 
     useEffect(() => {
-        document.title = "Login";
+        document.title = "Sign Up";
         return () => {
             document.title = "ShareMe";
         };
@@ -98,9 +90,15 @@ const Login = () => {
                     </div>
 
                     <form
-                        onSubmit={handleSubmit(handleLogin)}
+                        onSubmit={handleSubmit(handleSaveUser)}
                         className="flex flex-col gap-4 mt-6"
                     >
+                        <Input
+                            control={control}
+                            placeholder="Fullname"
+                            name="fullname"
+                        />
+
                         <Input
                             control={control}
                             placeholder="Username"
@@ -115,10 +113,10 @@ const Login = () => {
                         />
 
                         <Link
-                            to="/signup"
+                            to="/login"
                             className="text-white text-lg ml-auto hover:text-red-500 font-semibold"
                         >
-                            Sign up
+                            Login
                         </Link>
 
                         <button

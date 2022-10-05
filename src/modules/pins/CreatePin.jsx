@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import useGetUser from "../../hooks/useGetUser";
+import { getUserInfo } from "../../utils/fetchUser";
 
 const schema = yup
     .object()
@@ -21,14 +21,12 @@ const schema = yup
     })
     .required();
 
-const CreatePin = ({ userId }) => {
+const CreatePin = () => {
     const { loading, imageUrl, uploadImage, wrongImageType, setImageUrl } =
         useUploadImage();
     const navigate = useNavigate();
 
-    const { user } = useGetUser(userId);
-
-    console.log("createpin hooks");
+    const user = getUserInfo();
 
     const {
         control,
@@ -42,7 +40,7 @@ const CreatePin = ({ userId }) => {
             about: "",
             imageUrl: "",
             category: "",
-            authorId: user?.googleId,
+            authorId: user?.id,
         },
         resolver: yupResolver(schema),
     });
@@ -120,7 +118,7 @@ const CreatePin = ({ userId }) => {
                                 alt="user-profile"
                             />
                             <p className="font-bold dark:text-white">
-                                {user?.username}
+                                {user?.fullname}
                             </p>
                         </div>
                     )}

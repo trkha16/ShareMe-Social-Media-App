@@ -49,7 +49,7 @@ const Pin = ({ pin, userId = null }) => {
                         className="w-8 h-8 rounded-full object-cover"
                     />
                     <p className="font-semibold capitalize dark:text-white">
-                        {author?.username}
+                        {author?.fullname}
                     </p>
                 </Link>
             )}
