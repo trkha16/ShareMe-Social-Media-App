@@ -9,7 +9,14 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { v4 as uuidv4 } from "uuid";
-import { doc, setDoc } from "firebase/firestore";
+import {
+    collection,
+    doc,
+    getDocs,
+    query,
+    setDoc,
+    where,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase-config";
 
 const schema = yup
@@ -39,19 +46,36 @@ const Login = () => {
     });
 
     const handleSaveUser = async (values) => {
-        const saveUser = {
-            id: uuidv4(),
-            username: values?.username,
-            fullname: values?.fullname,
-            description: "@" + values?.username,
-            avatar: userAvatar,
-            password: values?.password,
-        };
+        const q = query(
+            collection(db, "users"),
+            where("username", "==", values?.username)
+        );
 
-        localStorage.setItem("user", JSON.stringify(saveUser));
-        await setDoc(doc(db, "users", saveUser?.id), saveUser);
-        toast.success("Success!!!", { pauseOnHover: false });
-        navigate("/");
+        const querySnapshot = await getDocs(q);
+        const results = [];
+        querySnapshot.forEach((doc) => {
+            results.push({
+                ...doc.data(),
+            });
+        });
+
+        if (results?.length > 0) {
+            toast.error("User existed", { pauseOnHover: false });
+        } else {
+            const saveUser = {
+                id: uuidv4(),
+                username: values?.username,
+                fullname: values?.fullname,
+                description: "@" + values?.username,
+                avatar: userAvatar,
+                password: values?.password,
+            };
+
+            localStorage.setItem("user", JSON.stringify(saveUser));
+            await setDoc(doc(db, "users", saveUser?.id), saveUser);
+            toast.success("Success!!!", { pauseOnHover: false });
+            navigate("/");
+        }
     };
 
     useEffect(() => {

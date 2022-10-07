@@ -39,7 +39,6 @@ const UpdateUserProfile = () => {
     });
 
     const handleSubmitProfile = async (values) => {
-        console.log(userInfo);
         try {
             const cloneValues = {
                 ...userInfo,

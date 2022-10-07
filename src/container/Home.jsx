@@ -9,15 +9,6 @@ import { getUserInfo } from "../utils/fetchUser";
 import Sidebar from "../modules/home/Sidebar";
 import { useSelector } from "react-redux";
 import Main from "../components/layout/Main";
-import {
-    collection,
-    doc,
-    getDocs,
-    query,
-    setDoc,
-    where,
-} from "firebase/firestore";
-import { db } from "../firebase/firebase-config";
 
 const Home = () => {
     const darkMode = useSelector((state) => state.global.darkMode);
@@ -26,41 +17,6 @@ const Home = () => {
     const navigate = useNavigate();
 
     const userInfo = getUserInfo();
-
-    // useEffect(() => {
-    //     async function fetchUserFromDB() {
-    //         const q = query(
-    //             collection(db, "users"),
-    //             where("username", "==", userInfo?.username)
-    //         );
-
-    //         const querySnapshot = await getDocs(q);
-    //         const results = [];
-    //         querySnapshot.forEach((doc) => {
-    //             results.push({
-    //                 ...doc.data(),
-    //             });
-    //         });
-
-    //         return results?.length > 0;
-    //     }
-
-    //     async function addUserToDB() {
-    //         fetchUserFromDB()
-    //             .then(async (data) => {
-    //                 if (!data) {
-    //                     await setDoc(doc(db, "users", userInfo?.id), userInfo);
-    //                 } else {
-    //                     localStorage.setItem("user", JSON.stringify(userInfo));
-    //                 }
-    //             })
-    //             .catch((err) => {
-    //                 console.log(err);
-    //             });
-    //     }
-
-    //     addUserToDB();
-    // }, [userInfo]);
 
     useEffect(() => {
         if (!userInfo) {

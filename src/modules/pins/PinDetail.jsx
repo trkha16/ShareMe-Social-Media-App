@@ -33,13 +33,13 @@ const PinDetail = () => {
     const lovePin = async () => {
         let lovedUsers = pinDetail?.lovedUsers;
 
-        const loveExist = lovedUsers.includes(Number(userId));
+        const loveExist = lovedUsers.includes(String(userId));
 
         if (!loveExist) {
-            lovedUsers.push(Number(userId));
+            lovedUsers.push(String(userId));
             setLoved((prev) => prev + 1);
         } else {
-            lovedUsers = lovedUsers.filter((item) => item !== Number(userId));
+            lovedUsers = lovedUsers.filter((item) => item !== String(userId));
             setLoved((prev) => prev - 1);
         }
 
@@ -74,7 +74,7 @@ const PinDetail = () => {
                     <div className="flex flex-col w-full">
                         <div
                             className={`flex items-center justify-center gap-1 ml-auto cursor-pointer px-3 py-2 rounded-xl text-white ${
-                                pinDetail?.lovedUsers.includes(Number(userId))
+                                pinDetail?.lovedUsers.includes(String(userId))
                                     ? "bg-red-600"
                                     : "bg-slate-600"
                             }`}
@@ -118,7 +118,9 @@ const PinDetail = () => {
                                 </div>
                             </div>
 
-                            <Button>Follow</Button>
+                            {String(userId) !== String(author?.id) && (
+                                <Button>Follow</Button>
+                            )}
                         </div>
                     </div>
                 </div>
