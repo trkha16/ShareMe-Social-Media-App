@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCnHdgTPFOZVEmQJKYBSybUJBvgIPJ-mUw",
-    authDomain: "shareme2-e5c61.firebaseapp.com",
-    projectId: "shareme2-e5c61",
-    storageBucket: "shareme2-e5c61.appspot.com",
-    messagingSenderId: "932107535165",
-    appId: "1:932107535165:web:7f442f864105a213433b54",
+  apiKey: "AIzaSyCAuSwf341zlC-OVqrXeakItD_76-p9414",
+  authDomain: "sharemeapp-cc2eb.firebaseapp.com",
+  projectId: "sharemeapp-cc2eb",
+  storageBucket: "sharemeapp-cc2eb.appspot.com",
+  messagingSenderId: "600839897975",
+  appId: "1:600839897975:web:c0033a668eb12d1fd41772",
 };
 
 const app = initializeApp(firebaseConfig);
